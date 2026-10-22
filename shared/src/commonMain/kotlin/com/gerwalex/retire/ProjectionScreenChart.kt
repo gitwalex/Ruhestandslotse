@@ -13,14 +13,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.gerwalex.mymonma.database.room.MyConverter
-import com.gerwalex.mymonma.ui.charts.rememberCompactCurrencyFormatter
 import com.patrykandpatrick.vico.compose.cartesian.CartesianChartHost
 import com.patrykandpatrick.vico.compose.cartesian.Zoom
 import com.patrykandpatrick.vico.compose.cartesian.axis.HorizontalAxis
 import com.patrykandpatrick.vico.compose.cartesian.axis.VerticalAxis
 import com.patrykandpatrick.vico.compose.cartesian.data.CartesianChartModelProducer
-import com.patrykandpatrick.vico.compose.cartesian.data.CartesianValueFormatter
 import com.patrykandpatrick.vico.compose.cartesian.data.lineModel
 import com.patrykandpatrick.vico.compose.cartesian.layer.LineCartesianLayer
 import com.patrykandpatrick.vico.compose.cartesian.layer.rememberLineCartesianLayer
@@ -30,7 +27,6 @@ import com.patrykandpatrick.vico.compose.cartesian.rememberVicoZoomState
 import com.patrykandpatrick.vico.compose.common.Fill
 import com.patrykandpatrick.vico.compose.common.component.rememberLineComponent
 import com.patrykandpatrick.vico.compose.common.component.rememberTextComponent
-import java.time.LocalDate
 
 
 @Composable
@@ -43,7 +39,9 @@ fun ProjectionScreenChart(
     val valueMarker = rememberDefaultCartesianMarker(
         label = rememberTextComponent(),
         valueFormatter = { _, _ ->
-            MyConverter.convertToCurrency(state.payoutPhaseEntries.values.firstOrNull() ?: 0L)
+            CurrencyFormatter.formatCurrency(
+                (state.payoutPhaseEntries.values.firstOrNull() ?: 0L).toFloat()
+            )
         },
         guideline = rememberLineComponent(
             fill = Fill(MaterialTheme.colorScheme.onSurface),
@@ -86,12 +84,7 @@ fun ProjectionScreenChart(
                         ),
                 ),
                 startAxis = VerticalAxis.rememberStart(valueFormatter = rememberCompactCurrencyFormatter()),
-                bottomAxis = HorizontalAxis.rememberBottom(
-                    valueFormatter =
-                        CartesianValueFormatter { _, value, _ ->
-                            "${value.toInt() + LocalDate.now().year}"
-                        }
-                ),
+                bottomAxis = HorizontalAxis.rememberBottom(valueFormatter = rememberYearOffsetFormatter()),
 //                marker = marker,
                 persistentMarkers = {
                     valueMarker at state.savingsPhaseDuration

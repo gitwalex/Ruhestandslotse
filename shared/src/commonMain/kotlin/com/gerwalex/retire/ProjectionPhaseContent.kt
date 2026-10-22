@@ -15,14 +15,11 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import com.gerwalex.mymonma.database.room.MyConverter
-import java.text.NumberFormat
 
 @Composable
 fun ProjectionPhaseContent(
@@ -69,12 +66,6 @@ fun SavingPhaseActionCard(
     val sliderModifier = Modifier
         .padding(top = 4.dp)
         .border(Dp.Hairline, color = MaterialTheme.colorScheme.onSurface)
-    val formatter = remember(maxFractionDigits) {
-        NumberFormat.getNumberInstance().apply {
-            maximumFractionDigits = maxFractionDigits
-            minimumFractionDigits = maxFractionDigits // Keine Nullen auffüllen
-        }
-    }
     Card(modifier = modifier.padding(vertical = 8.dp)) {
         FormattedMaterial3Slider(
             modifier = sliderModifier,
@@ -93,7 +84,7 @@ fun SavingPhaseActionCard(
                 actions.updateSavingPhaseAnnualSavings(it.toLong())
             },
             valueRange = 0f..24_000f,
-            valueFormatter = { MyConverter.currencyFormatter.getFormattedValue(it * 100) },
+            valueFormatter = { CurrencyFormatter.formatCurrency(it * 100) },
             header = { Text(text = "Jährliche Sparrate") }
         )
         FormattedMaterial3Slider(
@@ -103,7 +94,7 @@ fun SavingPhaseActionCard(
                 actions.updateSavingPhaseDynamizationRate(it.toInt() / 1000f)
             },
             valueRange = 0f..150f,
-            valueFormatter = { "${formatter.format(it / 10f)}%" },
+            valueFormatter = { "${NumberFormatter.formatDecimal(it / 10f)}%" },
             header = { Text(text = "Dynamisierungsrate") }
         )
         FormattedMaterial3Slider(
@@ -113,7 +104,7 @@ fun SavingPhaseActionCard(
                 actions.updateSavingPhaseReturnRate(it.toInt() / 1000f)
             },
             valueRange = 0f..80f,
-            valueFormatter = { "${formatter.format(it / 10f)}%" },
+            valueFormatter = { "${NumberFormatter.formatDecimal(it / 10f)}%" },
             header = { Text(text = "Erwartete Rendite") }
         )
     }
@@ -126,12 +117,6 @@ fun PayoutPhaseActionCard(
     modifier: Modifier = Modifier,
     maxFractionDigits: Int = 1,
 ) {
-    val formatter = remember(maxFractionDigits) {
-        NumberFormat.getNumberInstance().apply {
-            maximumFractionDigits = maxFractionDigits
-            minimumFractionDigits = maxFractionDigits // Keine Nullen auffüllen
-        }
-    }
     Card(modifier = modifier.padding(vertical = 8.dp)) {
         FormattedMaterial3Slider(
             value = state.payoutPhaseRequiredPayoutAmount.toFloat(),
@@ -140,7 +125,7 @@ fun PayoutPhaseActionCard(
             },
             valueRange = 0f..60_000f,
 
-            valueFormatter = { MyConverter.currencyFormatter.getFormattedValue(it * 100) },
+            valueFormatter = { CurrencyFormatter.formatCurrency(it * 100) },
             header = { Text(text = "Jährliche Auszahlung") }
         )
         FormattedMaterial3Slider(
@@ -150,14 +135,14 @@ fun PayoutPhaseActionCard(
             },
             valueRange = 0f..24_000f,
 
-            valueFormatter = { MyConverter.currencyFormatter.getFormattedValue(it * 100) },
+            valueFormatter = { CurrencyFormatter.formatCurrency(it * 100) },
             header = { Text(text = "Einkommen") }
         )
         FormattedMaterial3Slider(
             value = state.payoutPhaseReturnRate * 1000f,
             onValueChange = { actions.updatePayoutPhaseReturnRate(it.toInt() / 1000f) },
             valueRange = 0f..60f,
-            valueFormatter = { "${formatter.format(it / 10f)}%" },
+            valueFormatter = { "${NumberFormatter.formatDecimal(it / 10f)}%" },
             header = { Text(text = "Rendite") }
         )
         FormattedMaterial3Slider(
@@ -166,7 +151,7 @@ fun PayoutPhaseActionCard(
                 actions.updatePayoutInflationRate(it.toInt() / 1000f)
             },
             valueRange = 0f..50f,
-            valueFormatter = { "${formatter.format(it / 10f)}%" },
+            valueFormatter = { "${NumberFormatter.formatDecimal(it / 10f)}%" },
             header = { Text(text = "Inflationsrate") })
 
     }

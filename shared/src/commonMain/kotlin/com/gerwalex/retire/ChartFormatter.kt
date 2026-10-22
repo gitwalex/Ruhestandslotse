@@ -2,12 +2,14 @@ package com.gerwalex.retire
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
-import androidx.compose.ui.platform.LocalLocale
 import com.patrykandpatrick.vico.compose.cartesian.data.CartesianValueFormatter
+import kotlinx.datetime.TimeZone
+import kotlinx.datetime.toLocalDateTime
 import org.jetbrains.compose.resources.stringResource
 import ruhestandslotse.shared.generated.resources.Res
 import ruhestandslotse.shared.generated.resources.chart_millions
 import ruhestandslotse.shared.generated.resources.chart_thousands
+import kotlin.time.Clock
 
 /**
  * Remembers and returns an optimized [com.patrykandpatrick.vico.compose.cartesian.data.CartesianValueFormatter] for formatting monetary or numerical
@@ -28,21 +30,9 @@ import ruhestandslotse.shared.generated.resources.chart_thousands
  * @return A remembered [com.patrykandpatrick.vico.compose.cartesian.data.CartesianValueFormatter] configured with compact localized formatting rules.
  */
 @Composable
-fun rememberCompactCurrencyFormatter(): CartesianValueFormatter {
+fun rememberCompactCurrencyFormatter(currencySymbol: String = "€"): CartesianValueFormatter {
     val millionsTemplate = stringResource(Res.string.chart_millions)
     val thousandsTemplate = stringResource(Res.string.chart_thousands)
-
-    val deviceLocale = LocalLocale.current.platformLocale
-    val currencySymbol = remember(deviceLocale) {
-        try {
-            Currency.getInstance(deviceLocale).symbol
-        } catch (_: Exception) {
-            "€"
-        }
-    }
-    val decimalFormat = remember(deviceLocale) {
-        DecimalFormat("#,##0", DecimalFormatSymbols(deviceLocale))
-    }
 
     return remember(millionsTemplate, thousandsTemplate, currencySymbol) {
         CartesianValueFormatter { _, value, _ ->
@@ -51,19 +41,24 @@ fun rememberCompactCurrencyFormatter(): CartesianValueFormatter {
             when {
                 euros >= 1_000_000.0 -> {
                     val millions = euros / 1_000_000.0
-                    // Nutzt das template aus strings.xml (z.B. "1.0M €" oder "1,0 Mio. €")
-                    String.format(deviceLocale, millionsTemplate, millions, currencySymbol)
+                    // Einfache plattformunabhängige Formatierung (1 Nachkommastelle)
+                    val formattedMillions =
+                        ((millions * 10).toInt() / 10.0).toString().replace('.', ',')
+                    millionsTemplate
+                        .replace("{0}", formattedMillions)
+                        .replace("{1}", currencySymbol)
                 }
 
                 euros >= 100_000.0 -> {
-                    val thousands = (euros / 1_000.0).toInt()
-                    String.format(deviceLocale, thousandsTemplate, thousands, currencySymbol)
+                    val thousands = (euros / 1_000.0).toInt().toString()
+                    thousandsTemplate
+                        .replace("{0}", thousands)
+                        .replace("{1}", currencySymbol)
                 }
 
                 else -> {
-                    val formattedNum =
-                        decimalFormat.apply { maximumFractionDigits = 0 }.format(euros)
-                    "$formattedNum $currencySymbol"
+                    // Kleinere Beträge direkt als String
+                    "${euros.toInt()} $currencySymbol"
                 }
             }
         }
@@ -72,16 +67,20 @@ fun rememberCompactCurrencyFormatter(): CartesianValueFormatter {
 
 /**
  * Remembers and returns a [CartesianValueFormatter] that converts numerical axis values
- * (such as chart indices or relative year offsets) into absolute calendar year strings.
- *dds this integer value as an offset directly to the current calendar year retrieved via `LocalDate.now().year`.
- *
- * @return A remembered [CartesianValueFormatter] formatting chart axis values as years.
+ * into absolute calendar year strings using kotlinx-datetime.
  */
 @Composable
 fun rememberYearOffsetFormatter(): CartesianValueFormatter {
-    return remember {
+    val currentYear = remember {
+        Clock.System.now()
+            .toLocalDateTime(TimeZone.currentSystemDefault())
+            .date
+            .year
+    }
+
+    return remember(currentYear) {
         CartesianValueFormatter { _, value, _ ->
-            "${value.toInt() + LocalDate.now().year}"
+            "${value.toInt() + currentYear}"
         }
     }
 }
