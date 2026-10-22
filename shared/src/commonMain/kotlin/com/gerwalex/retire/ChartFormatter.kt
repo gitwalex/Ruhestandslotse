@@ -3,14 +3,11 @@ package com.gerwalex.retire
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.platform.LocalLocale
-import androidx.compose.ui.res.stringResource
-import com.gerwalex.mymonma.R
 import com.patrykandpatrick.vico.compose.cartesian.data.CartesianValueFormatter
 import org.jetbrains.compose.resources.stringResource
-import java.text.DecimalFormat
-import java.text.DecimalFormatSymbols
-import java.time.LocalDate
-import java.util.Currency
+import ruhestandslotse.shared.generated.resources.Res
+import ruhestandslotse.shared.generated.resources.chart_millions
+import ruhestandslotse.shared.generated.resources.chart_thousands
 
 /**
  * Remembers and returns an optimized [com.patrykandpatrick.vico.compose.cartesian.data.CartesianValueFormatter] for formatting monetary or numerical
@@ -32,8 +29,8 @@ import java.util.Currency
  */
 @Composable
 fun rememberCompactCurrencyFormatter(): CartesianValueFormatter {
-    val millionsTemplate = stringResource(R.string.chart_millions)
-    val thousandsTemplate = stringResource(R.string.chart_thousands)
+    val millionsTemplate = stringResource(Res.string.chart_millions)
+    val thousandsTemplate = stringResource(Res.string.chart_thousands)
 
     val deviceLocale = LocalLocale.current.platformLocale
     val currencySymbol = remember(deviceLocale) {

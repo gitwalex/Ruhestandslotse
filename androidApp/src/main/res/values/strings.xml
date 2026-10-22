@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">Ruhestandslotse</string>
+    <string name="chart_millions">%.1fM %s</string>
+    <string name="chart_thousands">%dK %s</string>
 </resources>

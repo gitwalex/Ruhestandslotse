@@ -1,0 +1,4 @@
+<resources>
+    <string name="chart_millions">%.1f Mio. %s</string>
+    <string name="chart_thousands">%d Tsd. %s</string>
+</resources>
