@@ -25,6 +25,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -62,6 +63,28 @@ fun FormattedMaterial3Slider(
             sliderState.value = value
         }
     }
+    LaunchedEffect(sliderState.value) {
+        onValueChange(sliderState.value)
+    }
+    if (isDynamic) {
+        LaunchedEffect(sliderState) {
+            snapshotFlow { sliderState.isDragging }
+                .collect { isPressed ->
+                    // Wenn isPressed von true auf false springt, wurde das Draggen beendet
+                    if (!isPressed) {
+                        val diff = ((valueRange.endInclusive - valueRange.start) * 0.2).toFloat()
+
+                        if (sliderState.value >= maxLimit * 0.8f) {
+                            sliderValue = sliderState.value
+                            maxLimit += diff
+                        } else if (maxLimit > valueRange.endInclusive && sliderState.value <= maxLimit * 0.2f) {
+                            sliderValue = sliderState.value
+                            maxLimit = (maxLimit - diff).coerceAtLeast(valueRange.endInclusive)
+                        }
+                    }
+                }
+        }
+    }
     Box(modifier = modifier) {
         Column(
             modifier = Modifier
@@ -75,21 +98,6 @@ fun FormattedMaterial3Slider(
                     .fillMaxWidth()
                     .padding(top = 20.dp),
                 state = sliderState,
-//                onValueChangeFinished = {
-//                    if (isDynamic) {
-//                        val diff =
-//                            ((valueRange.endInclusive - valueRange.start) * 0.2).toLong()
-//                        if (sliderState.value >= maxLimit * 0.8f) {
-//                            sliderValue = sliderState.value
-//                            maxLimit += diff
-//                        }
-//                        if (maxLimit > valueRange.endInclusive && sliderState.value <= maxLimit * 0.2f) {
-//                            sliderValue = sliderState.value
-//                            maxLimit -= diff
-//                        }
-//                    }
-//                },
-//                onValueChange = onValueChange,
                 track = { state ->
                     Canvas(
                         modifier = Modifier

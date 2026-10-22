@@ -1,7 +1,6 @@
 package com.gerwalex.retire
 
 import android.content.Context
-import android.os.Build
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.PreferenceDataStoreFactory
 import androidx.datastore.preferences.core.Preferences
@@ -13,9 +12,6 @@ import java.text.NumberFormat
 import java.util.Currency
 import java.util.Locale
 
-class AndroidPlatform : Platform {
-    override val name: String = "Android ${Build.VERSION.SDK_INT}"
-}
 
 fun createAndroidDataStore(context: Context): DataStore<Preferences> {
     return PreferenceDataStoreFactory.createWithPath(
@@ -25,7 +21,6 @@ fun createAndroidDataStore(context: Context): DataStore<Preferences> {
     )
 }
 
-actual fun getPlatform(): Platform = AndroidPlatform()
 actual fun getSystemLocale(): String = Locale.getDefault().language
 
 actual object NumberFormatter {

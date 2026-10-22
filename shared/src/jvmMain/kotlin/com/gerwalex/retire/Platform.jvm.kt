@@ -11,11 +11,7 @@ import java.text.NumberFormat
 import java.util.Currency
 import java.util.Locale
 
-class JVMPlatform: Platform {
-    override val name: String = "Java ${System.getProperty("java.version")}"
-}
-
-actual fun getPlatform(): Platform = JVMPlatform()
+class J
 actual fun getSystemLocale(): String = Locale.getDefault().language
 
 actual val platformModule: Module = module {
