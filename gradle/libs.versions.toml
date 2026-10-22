@@ -124,6 +124,11 @@ ktor-client-core = { group = "io.ktor", name = "ktor-client-core" }
 ktor-client-core-cio = { group = "io.ktor", name = "ktor-client-cio" }
 ktor-client-content-negotiation = { group = "io.ktor", name = "ktor-client-content-negotiation" }
 ktor-serialization-kotlinx-json = { group = "io.ktor", name = "ktor-serialization-kotlinx-json" }
+ktor-server-core = { group = "io.ktor", name = "ktor-server-core" }
+ktor-server-netty = { group = "io.ktor", name = "ktor-server-netty" }
+ktor-server-content-negotiation = { group = "io.ktor", name = "ktor-server-content-negotiation" }
+ktor-serialization-kotlinx-json-server = { group = "io.ktor", name = "ktor-serialization-kotlinx-json" }
+ktor-server-call-logging = { group = "io.ktor", name = "ktor-server-call-logging" }
 
 # Serialization & Logging
 kotlinx-serialization-json = { group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version.ref = "serialization" }
@@ -167,6 +172,7 @@ junit = { group = "junit", name = "junit", version.ref = "junit" }
 androidLifecycle = ["android-lifecycle-viewmodel", "android-lifecycle-runtime-compose", "android-lifecycle-process"]
 koin = ["koin-android", "koin-android-annotations", "koin-androidx-compose", "koin-core", "koin-worker"]
 ktor-client = ["ktor-client-core", "ktor-client-core-cio", "ktor-client-content-negotiation"]
+ktor-server = ["ktor-server-core", "ktor-server-netty", "ktor-server-content-negotiation", "ktor-serialization-kotlinx-json-server", "ktor-server-call-logging"]
 nav3 = ["androidx-nav3-runtime", "androidx-nav3-ui", "androidx-lifecycle-viewmodel-nav3", "androidx-material3-adaptive-nav3"]
 paging = ["paging-runtime", "paging-common", "paging-compose", "room-paging"]
 material3-bundle = ["material3", "material3-android", "material3-icons-extended", "material3-android-windowSize"]
