@@ -16,7 +16,7 @@ dependencies {
 }
 compose.desktop {
     application {
-        mainClass = "MainKt" // Pfad zu Ihrer Main-Funktion
+        mainClass = "com.gerwalex.retire.MainKt" // Pfad zu Ihrer Main-Funktion
 
         nativeDistributions {
             // Name der App im Startmenü / auf dem Rechner
