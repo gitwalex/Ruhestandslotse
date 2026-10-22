@@ -1,12 +1,28 @@
 package com.gerwalex.retire
 
+import android.content.Context
 import android.os.Build
+import androidx.datastore.core.DataStore
+import androidx.datastore.preferences.core.PreferenceDataStoreFactory
+import androidx.datastore.preferences.core.Preferences
+import okio.Path.Companion.toPath
+import org.koin.android.ext.koin.androidContext
+import org.koin.core.module.Module
+import org.koin.dsl.module
 import java.text.NumberFormat
 import java.util.Currency
 import java.util.Locale
 
 class AndroidPlatform : Platform {
     override val name: String = "Android ${Build.VERSION.SDK_INT}"
+}
+
+fun createAndroidDataStore(context: Context): DataStore<Preferences> {
+    return PreferenceDataStoreFactory.createWithPath(
+        produceFile = {
+            context.filesDir.resolve("preferences.preferences_pb").absolutePath.toPath()
+        }
+    )
 }
 
 actual fun getPlatform(): Platform = AndroidPlatform()
@@ -35,4 +51,10 @@ actual object CurrencyFormatter {
 
     actual val currencySymbol: String
         get() = Currency.getInstance(Locale.getDefault()).symbol
+}
+
+actual val platformModule: Module = module {
+    single<DataStore<Preferences>> {
+        createAndroidDataStore(androidContext())
+    }
 }

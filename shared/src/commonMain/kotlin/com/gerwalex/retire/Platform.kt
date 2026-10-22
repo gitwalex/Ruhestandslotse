@@ -1,5 +1,7 @@
 package com.gerwalex.retire
 
+import org.koin.core.module.Module
+
 interface Platform {
     val name: String
 }
@@ -7,6 +9,7 @@ interface Platform {
 expect fun getPlatform(): Platform
 expect fun getSystemLocale(): String
 
+expect val platformModule: Module
 expect object CurrencyFormatter {
     val currencySymbol: String
     fun formatCurrency(amount: Float): String

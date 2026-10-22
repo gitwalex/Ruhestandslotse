@@ -1,4 +1,3 @@
-import org.jetbrains.kotlin.gradle.ExperimentalWasmDsl
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
 plugins {
@@ -20,17 +19,6 @@ kotlin {
     }
     
     jvm()
-    
-    js {
-        browser()
-        binaries.executable()
-    }
-    
-    @OptIn(ExperimentalWasmDsl::class)
-    wasmJs {
-        browser()
-        binaries.executable()
-    }
     
     android {
        namespace = "com.gerwalex.retire.shared"
@@ -57,9 +45,11 @@ kotlin {
         androidMain.dependencies {
             implementation(libs.compose.uiToolingPreview)
             implementation(libs.compose.uiTooling)
+            implementation(libs.koin.android)
+            implementation(libs.koin.androidx.compose)
+            implementation(libs.koin.worker)
         }
         commonMain.dependencies {
-
             implementation(libs.compose.foundation)
             implementation(libs.compose.material3)
             implementation(libs.compose.ui)
@@ -68,14 +58,17 @@ kotlin {
             implementation(libs.androidx.lifecycle.viewmodelCompose)
             implementation(libs.androidx.lifecycle.runtimeCompose)
 
+            api(project.dependencies.platform(libs.koin.bom))
+            api(libs.koin.core)
+            api("io.insert-koin:koin-compose")
+            api("io.insert-koin:koin-compose-viewmodel")
+
             implementation(libs.bundles.vico)
             implementation(libs.kotlinx.datetime)
+            implementation(libs.androidx.datastore)
         }
         commonTest.dependencies {
             implementation(libs.kotlin.test)
-        }
-        jsMain.dependencies {
-            implementation(libs.wrappers.browser)
         }
     }
 }
