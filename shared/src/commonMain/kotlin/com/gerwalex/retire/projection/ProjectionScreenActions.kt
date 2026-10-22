@@ -1,4 +1,4 @@
-package com.gerwalex.retire
+package com.gerwalex.retire.projection
 
 class ProjectionScreenActions(
     val updateSavingsPhaseDuration: (Int) -> Unit = {},

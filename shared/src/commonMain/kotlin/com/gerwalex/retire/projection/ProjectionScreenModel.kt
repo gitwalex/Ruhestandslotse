@@ -1,4 +1,4 @@
-package com.gerwalex.retire
+package com.gerwalex.retire.projection
 
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences

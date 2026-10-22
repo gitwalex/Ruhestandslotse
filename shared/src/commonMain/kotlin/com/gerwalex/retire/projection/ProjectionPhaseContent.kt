@@ -1,4 +1,4 @@
-package com.gerwalex.retire
+package com.gerwalex.retire.projection
 
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Box
@@ -20,6 +20,8 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import com.gerwalex.retire.CurrencyFormatter
+import com.gerwalex.retire.NumberFormatter
 
 @Composable
 fun ProjectionPhaseContent(

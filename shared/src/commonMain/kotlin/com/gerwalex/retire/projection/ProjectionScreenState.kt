@@ -1,4 +1,4 @@
-package com.gerwalex.retire
+package com.gerwalex.retire.projection
 
 data class ProjectionScreenState(
     val isLoading: Boolean = false,

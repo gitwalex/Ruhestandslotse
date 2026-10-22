@@ -15,6 +15,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.gerwalex.retire.projection.ProjectionPhaseContent
+import com.gerwalex.retire.projection.ProjectionScreenActions
+import com.gerwalex.retire.projection.ProjectionScreenChart
+import com.gerwalex.retire.projection.ProjectionScreenModel
+import com.gerwalex.retire.projection.ProjectionScreenState
 import org.koin.compose.viewmodel.koinViewModel
 
 

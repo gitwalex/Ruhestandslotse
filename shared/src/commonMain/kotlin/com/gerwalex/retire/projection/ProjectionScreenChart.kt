@@ -1,4 +1,4 @@
-package com.gerwalex.retire
+package com.gerwalex.retire.projection
 
 import androidx.compose.animation.core.spring
 import androidx.compose.foundation.border
@@ -13,6 +13,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.gerwalex.retire.CurrencyFormatter
+import com.gerwalex.retire.rememberCompactCurrencyFormatter
+import com.gerwalex.retire.rememberYearOffsetFormatter
 import com.patrykandpatrick.vico.compose.cartesian.CartesianChartHost
 import com.patrykandpatrick.vico.compose.cartesian.Zoom
 import com.patrykandpatrick.vico.compose.cartesian.axis.HorizontalAxis

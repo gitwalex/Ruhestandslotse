@@ -1,4 +1,4 @@
-package com.gerwalex.retire
+package com.gerwalex.retire.projection
 
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
