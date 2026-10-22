@@ -3,6 +3,8 @@ package com.gerwalex.retire
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.PreferenceDataStoreFactory
 import androidx.datastore.preferences.core.Preferences
+import kotlinx.cinterop.ExperimentalForeignApi
+import okio.Path.Companion.toPath
 import org.koin.core.module.Module
 import org.koin.dsl.module
 import platform.Foundation.NSDocumentDirectory
@@ -34,6 +36,7 @@ actual val platformModule: Module = module {
     }
 }
 
+@OptIn(ExperimentalForeignApi::class)
 fun createIosDataStore(): DataStore<Preferences> {
     return PreferenceDataStoreFactory.createWithPath(
         produceFile = {
